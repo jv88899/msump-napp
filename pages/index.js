@@ -1,9 +1,25 @@
+import useWindowSize from "@/utils/useWindowSize";
 import Head from "next/head";
-import { Inter } from "@next/font/google";
+import homeStyles from "../styles/Home.module.css";
 
-const inter = Inter({ subsets: ["latin"] });
+function SmallScreen() {
+  return <h1>amll</h1>;
+}
+
+function LargeScreen() {
+  return <h1>Large</h1>;
+}
 
 export default function Home() {
+  const { width } = useWindowSize();
+
+  let body = <p style={{ marginTop: "80px" }}>Loading...</p>;
+  if (width < 768) {
+    body = <SmallScreen />;
+  } else if (width >= 768) {
+    body = <LargeScreen />;
+  }
+
   return (
     <>
       <Head>
@@ -12,7 +28,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>MSUMP</div>
+      {<div className={homeStyles.wrapper}>{body}</div>}
     </>
   );
 }
