@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import styles from "../styles/Signup.module.css";
 import { supabase } from "@/utils/supabase";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Signup() {
   const {
@@ -139,6 +140,7 @@ export default function Signup() {
             </button>
           </div>
         </form>
+        Already have an account? <Link href="/signin">Sign in instead</Link>.
       </div>
     </div>
   );
