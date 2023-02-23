@@ -65,7 +65,9 @@ export default function Signup() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.innerWrapper}>
-        <div className={styles.pageTitle}>Sign Up</div>
+        <div className={styles.pageTitle}>
+          <h1>Sign Up</h1>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.inputWrapper}>
             <label htmlFor="username">Username</label>
@@ -108,13 +110,15 @@ export default function Signup() {
               {...register("email", {
                 required: "Email is required",
                 maxLength: {
-                  value: 30,
-                  message: "Email must be less than 30 characters",
+                  value: 99,
+                  message: "Email must be less than 99 characters",
                 },
               })}
               type="email"
             />
-            <div className={styles.error}>{errors.email?.message}</div>
+            <div className={styles.error}>
+              <p>{errors.email?.message}</p>
+            </div>
           </div>
           <div className={styles.inputWrapper}>
             <label htmlFor="password">Password</label>
@@ -132,7 +136,9 @@ export default function Signup() {
               })}
               type="password"
             />
-            <div className={styles.error}>{errors.password?.message}</div>
+            <div className={styles.error}>
+              <p>{errors.password?.message}</p>
+            </div>
           </div>
           <div className={styles.inputWrapper}>
             <button className={styles.signupButton} type="submit">

@@ -6,10 +6,9 @@ import Header from "@/components/Header";
 import { supabase } from "@/utils/supabase";
 
 export default function Home() {
-  // console.log("user", supabase.auth.user());
-  // supabase.auth.onAuthStateChange((event, session) => {
-  //   console.log(event, session);
-  // });
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log(event, session);
+  });
   return (
     <>
       <Head>
