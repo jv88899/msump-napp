@@ -3,8 +3,13 @@ import Image from "next/image";
 import homeStyles from "../styles/Home.module.css";
 import Link from "next/link";
 import Header from "@/components/Header";
+import { supabase } from "@/utils/supabase";
 
 export default function Home() {
+  // console.log("user", supabase.auth.user());
+  // supabase.auth.onAuthStateChange((event, session) => {
+  //   console.log(event, session);
+  // });
   return (
     <>
       <Head>

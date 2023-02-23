@@ -2,6 +2,8 @@ import React from "react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import styles from "../styles/Signup.module.css";
+import { supabase } from "@/utils/supabase";
+import { useRouter } from "next/router";
 
 export default function Signup() {
   const {
@@ -9,22 +11,55 @@ export default function Signup() {
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
+  const router = useRouter();
 
   const successfulSignup = () => toast.success("You have signed up!");
 
-  async function onSubmit(data) {
+  async function onSubmit(formData) {
     try {
-      const { username, email, password, firstName, lastName } = data;
+      const { username, email, password, fullName } = formData;
 
-      successfulSignup();
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username,
+            full_name: fullName,
+            avatar_url: null,
+          },
+        },
+      });
+
+      console.log(data);
+      console.log(error);
+
+      if (data && !error) successfulSignup();
+      if (data && !error) router.push("/");
     } catch (error) {
       console.log(error);
     }
   }
 
   async function checkIfUsernameTaken(username) {
-    return true;
+    try {
+      let { data, error } = await supabase
+        .from("usernames")
+        .select("*")
+        .eq("username", username);
+
+      console.log("data", data);
+      console.log("error", error);
+
+      if (data.length === 0) {
+        return true;
+      } else if (data.length > 0) {
+        return "Sorry, but that username is not available";
+      }
+    } catch (error) {}
   }
+
+  console.log(checkIfUsernameTaken("test"));
 
   return (
     <div className={styles.wrapper}>
@@ -44,39 +79,27 @@ export default function Signup() {
                   value: 20,
                   message: "Username must be less than 20 characters",
                 },
-                validate: (value) => checkIfUsernameTaken(value),
+                validate: (value) => {
+                  return checkIfUsernameTaken(value);
+                },
               })}
               type="text"
             />
             <div className={styles.error}>{errors.username?.message}</div>
           </div>
           <div className={styles.inputWrapper}>
-            <label htmlFor="firstname">First Name</label>
+            <label htmlFor="fullname">Full Name</label>
             <input
-              {...register("firstName", {
-                required: "First Name is required",
+              {...register("fullName", {
+                required: "Full Name is required",
                 maxLength: {
                   value: 30,
-                  message: "First name must be less than 30 characters",
+                  message: "Full name must be less than 30 characters",
                 },
               })}
               type="text"
             />
-            <div className={styles.error}>{errors.firstName?.message}</div>
-          </div>
-          <div className={styles.inputWrapper}>
-            <label htmlFor="lastname">Last Name</label>
-            <input
-              {...register("lastName", {
-                required: "Last name is required",
-                maxLength: {
-                  value: 30,
-                  message: "Last name must be less than 30 characters",
-                },
-              })}
-              type="text"
-            />
-            <div className={styles.error}>{errors.lastName?.message}</div>
+            <div className={styles.error}>{errors.fullName?.message}</div>
           </div>
           <div className={styles.inputWrapper}>
             <label htmlFor="email">Email</label>
