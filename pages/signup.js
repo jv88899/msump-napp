@@ -35,7 +35,7 @@ export default function Signup() {
       console.log(error);
 
       if (data && !error) successfulSignup();
-      if (data && !error) router.push("/");
+      if (data && !error) router.push("/dashboard");
     } catch (error) {
       console.log(error);
     }
