@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import styles from "../styles/Signup.module.css";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function AddAlbum() {
   const [uploading, setUploading] = React.useState(false);
@@ -46,7 +47,7 @@ export default function AddAlbum() {
       if (error) console.log(error);
 
       if (data && !error) successfulAlbumAdded();
-      if (data && !error) router.push("/addalbum");
+      if (data && !error) router.push("/albums");
     } catch (error) {
       console.log(error);
     }
@@ -57,6 +58,7 @@ export default function AddAlbum() {
       <div>
         <div>
           <h1>Add Album</h1>
+          <Link href="/albums">Albums</Link>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.inputWrapper}>
