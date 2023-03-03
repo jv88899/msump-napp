@@ -1,3 +1,4 @@
+import Album from "@/components/Album";
 import { supabase } from "@/utils/supabase";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -54,11 +55,7 @@ export default function Vote() {
           {albumIndex < numberOfAlbums && !allVotesUsed ? (
             <>
               <div className={styles.albumContainer}>
-                {currentAlbum && (
-                  <>
-                    <h3>{currentAlbum.title}</h3>
-                  </>
-                )}
+                {currentAlbum && <Album album={currentAlbum} />}
               </div>
             </>
           ) : (
