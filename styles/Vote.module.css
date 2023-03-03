@@ -1,50 +1,84 @@
 .wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 80px;
 }
 
 .pageTitle {
 }
 
 .albumContainer {
+  height: 300px;
+  max-width: 300px;
+  width: 90vw;
 }
 
-.album {
+.albumInfoWrapper {
+  align-items: center;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  width: 100%;
 }
 
 .albumVotingInformationWrapper {
 }
 
 .upvotesContainer {
+  background-color: #fff;
 }
 
 .downvotesContainer {
+  background-color: #fff;
 }
 
 .albumCommentsWrapper {
+  align-items: center;
+  display: flex;
 }
 
 .albumCommentIcon {
+  height: 40px;
+  width: 40px;
 }
 
 .albumCommentCountContainer {
-}
-
-.albumInfoWrapper {
+  margin-left: 18px;
 }
 
 .albumTrackListWrapper {
+  margin-top: 60px;
+  max-width: 300px;
+  width: 100%;
 }
 
 .trackListButton {
+  margin-top: 15px;
+  width: 100%;
 }
 
 .buttonWrapper {
+  display: flex;
+  margin-top: 20px;
+}
+
+.buttonWrapper button {
+  background: none;
+  border: none;
 }
 
 .button {
 }
 
 .thumbsDownIcon {
+  height: 40px;
+  width: 40px;
 }
 
 .thumbsUpIcon {
+  height: 40px;
+  width: 40px;
 }
