@@ -62,16 +62,27 @@ export default function Vote() {
     }
   }, [status, data, albums, albumIndex, currentAlbum, user]);
 
+  function handleUpdateCurrentAlbum() {
+    if (albumIndex < numberOfAlbums - 1) {
+      setAlbumIndex((prevCount) => prevCount + 1);
+      setCurrentAlbum(albums[albumIndex]);
+    } else if (albumIndex === numberOfAlbums - 1) {
+      setAllVotesUsed(true);
+    }
+  }
+
   function showComments() {}
 
   function showTrackList() {}
 
   async function handleUpvote() {
     await upvote();
+    handleUpdateCurrentAlbum();
   }
 
   async function handleDownvote() {
     await downvote();
+    handleUpdateCurrentAlbum();
   }
 
   async function upvote() {
