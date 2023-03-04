@@ -74,7 +74,7 @@ export default function Vote() {
       setDownvotes(data[3].length);
       setUser(data[4].session.user);
 
-      const numberOfVotesAvailable = 10;
+      const numberOfVotesAvailable = 5;
       const votesUsedToday = data[5].filter(
         (vote) =>
           dayjs(new Date(vote.created_at)).format("YYYY/MM/DD") ===
@@ -87,17 +87,6 @@ export default function Vote() {
 
       console.log("votesUsedToday", votesUsedToday);
     }
-
-    // const numberOfVotesAvailable = 3;
-    // const votesUsedToday = data[5].data.data.votes.filter(
-    //   (vote) =>
-    //     dayjs(new Date(vote.created_at)).format("YYYY/MM/DD") ===
-    //     dayjs().format("YYYY/MM/DD")
-    // );
-
-    // setAllVotesUsed(
-    //   numberOfVotesAvailable <= votesUsedToday.length ? true : false
-    // );
   }, [status, data, albums, albumIndex, currentAlbum, user]);
 
   function handleUpdateCurrentAlbum() {
