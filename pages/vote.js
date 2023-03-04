@@ -18,6 +18,7 @@ export default function Vote() {
   const [downvotes, setDownvotes] = React.useState(0);
   const [comments, setComments] = React.useState([]);
   const [allVotesUsed, setAllVotesUsed] = React.useState(false);
+  const [user, setUser] = React.useState(null);
 
   const { status, data, error, isLoading } = useQuery(
     ["albumInformation", albumIndex],
@@ -37,7 +38,12 @@ export default function Vote() {
         .from("votes")
         .select("downvote");
 
-      return [allAlbums, activeAlbum, upvotes, downvotes];
+      const { data: userInfo, error: userInfoError } =
+        await supabase.auth.getSession();
+
+      console.log(userInfo);
+
+      return [allAlbums, activeAlbum, upvotes, downvotes, userInfo];
     },
     { refetchOnWindowFocus: false }
   );
@@ -51,16 +57,63 @@ export default function Vote() {
       setCurrentAlbum(data[1]);
       setUpvotes(data[2].length);
       setDownvotes(data[3].length);
+      setUser(data[4].session.user);
     }
-  }, [status, data, albums, albumIndex, currentAlbum]);
+  }, [status, data, albums, albumIndex, currentAlbum, user]);
 
   function showComments() {}
 
   function showTrackList() {}
 
-  function handleUpvote() {}
+  async function handleUpvote() {
+    await upvote();
+  }
 
-  function handleDownvote() {}
+  async function handleDownvote() {
+    await downvote();
+  }
+
+  async function upvote() {
+    try {
+      const { data: upvote, error: upvoteError } = await supabase
+        .from("votes")
+        .insert([
+          {
+            user_id: user.id,
+            album_id: currentAlbum.id,
+            upvote: true,
+            downvote: false,
+          },
+        ]);
+
+      console.log("upvote", upvote);
+      console.log("error", upvoteError);
+
+      successfulUpvote();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  async function downvote() {
+    try {
+      const { data: downvote, error: downvoteError } = await supabase
+        .from("votes")
+        .insert([
+          {
+            user_id: user.id,
+            album_id: currentAlbum.id,
+            upvote: false,
+            downvote: true,
+          },
+        ]);
+
+      console.log("downvote", downvote);
+      console.log("error", downvoteError);
+
+      successfulDownvote();
+    } catch (error) {}
+  }
 
   return (
     <div className={styles.wrapper}>
