@@ -2,9 +2,9 @@
   background-color: #fff1ed;
   border-bottom: 1px solid black;
   height: 60px;
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
-  z-index: 200;
+  z-index: -20;
 }
 
 .innerWrapper {
@@ -26,6 +26,7 @@
   flex-direction: column;
   height: 30px;
   justify-content: space-around;
+  z-index: 400;
 }
 
 .hamburgerMenuWrapper div {
@@ -34,4 +35,14 @@
   transition: all 0.3s linear;
   transform-origin: 2.5px;
   width: 30px;
+}
+
+.navigationMenuWrapper {
+  background-color: #fff;
+  height: calc(100vh - 80px);
+  left: 0;
+  position: absolute;
+  top: 60px;
+  width: 100vw;
+  z-index: 100;
 }

@@ -1,4 +1,5 @@
 import Album from "@/components/Album";
+import Header from "@/components/Header";
 import Layout from "@/components/Layout";
 import { supabase } from "@/utils/supabase";
 import { useQuery } from "@tanstack/react-query";
@@ -151,7 +152,8 @@ export default function Vote() {
   }
 
   return (
-    <Layout>
+    <>
+      <Header />
       <div className={styles.wrapper}>
         <h2 className={styles.pageTitle}>Vote</h2>
         {error ? <span>Error {error.message}</span> : null}
@@ -254,6 +256,6 @@ export default function Vote() {
           </>
         )}
       </div>
-    </Layout>
+    </>
   );
 }
