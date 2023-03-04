@@ -2,16 +2,23 @@ import React from "react";
 import TinderCard from "react-tinder-card";
 import styles from "../components/Album.module.css";
 
-export default function Album({ album }) {
+export default function Album({
+  album,
+  upvote,
+  downvote,
+  handleUpdateCurrentAlbum,
+}) {
   const { album_image, title, artist } = album;
 
   function onCardLeftScreen(direction) {
     if (direction === "left") {
-      console.log("direction", direction);
+      downvote();
+      handleUpdateCurrentAlbum();
     }
 
     if (direction === "right") {
-      console.log("direction", direction);
+      upvote();
+      handleUpdateCurrentAlbum();
     }
   }
 

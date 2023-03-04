@@ -74,7 +74,7 @@ export default function Vote() {
       setDownvotes(data[3].length);
       setUser(data[4].session.user);
 
-      const numberOfVotesAvailable = 5;
+      const numberOfVotesAvailable = 15;
       const votesUsedToday = data[5].filter(
         (vote) =>
           dayjs(new Date(vote.created_at)).format("YYYY/MM/DD") ===
@@ -162,7 +162,14 @@ export default function Vote() {
           {albumIndex < numberOfAlbums && !allVotesUsed ? (
             <>
               <div className={styles.albumContainer}>
-                {currentAlbum && <Album album={currentAlbum} />}
+                {currentAlbum && (
+                  <Album
+                    album={currentAlbum}
+                    upvote={upvote}
+                    downvote={downvote}
+                    handleUpdateCurrentAlbum={handleUpdateCurrentAlbum}
+                  />
+                )}
                 <div className={styles.albumInfoWrapper}>
                   <div className={styles.albumVotingInformationWrapper}>
                     <span className={styles.upvotesContainer}>+ {upvotes}</span>
