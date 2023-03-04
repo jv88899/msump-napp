@@ -32,16 +32,18 @@ export default function Vote() {
 
       const { data: upvotes, error: upvotesError } = await supabase
         .from("votes")
-        .select("upvote");
+        .select("*")
+        .eq("album_id", activeAlbumId)
+        .eq("upvote", true);
 
       const { data: downvotes, error: downvotesError } = await supabase
         .from("votes")
-        .select("downvote");
+        .select("*")
+        .eq("album_id", activeAlbumId)
+        .eq("downvote", true);
 
       const { data: userInfo, error: userInfoError } =
         await supabase.auth.getSession();
-
-      console.log(userInfo);
 
       return [allAlbums, activeAlbum, upvotes, downvotes, userInfo];
     },
@@ -51,7 +53,6 @@ export default function Vote() {
   React.useEffect(() => {
     if (status === "loading") return;
     if (status === "success") {
-      console.log("data", data);
       setAlbums(data[0]);
       setNumberOfAlbums(data[0].length);
       setCurrentAlbum(data[1]);
@@ -86,9 +87,6 @@ export default function Vote() {
           },
         ]);
 
-      console.log("upvote", upvote);
-      console.log("error", upvoteError);
-
       successfulUpvote();
     } catch (error) {
       console.log(error.message);
@@ -108,17 +106,16 @@ export default function Vote() {
           },
         ]);
 
-      console.log("downvote", downvote);
-      console.log("error", downvoteError);
-
       successfulDownvote();
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.pageTitle}>Vote</h2>
-      {error ? <span>Error {error.message}</span> : ""}
+      {error ? <span>Error {error.message}</span> : null}
 
       {isLoading ? (
         <span>Loading...</span>
