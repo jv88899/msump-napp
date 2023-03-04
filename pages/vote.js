@@ -1,10 +1,12 @@
 import Album from "@/components/Album";
 import { supabase } from "@/utils/supabase";
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import Link from "next/link";
 import React from "react";
 import toast from "react-hot-toast";
 import styles from "../styles/Vote.module.css";
+dayjs;
 
 const successfulUpvote = () => toast.success("Upvoted");
 const successfulDownvote = () => toast.success("Downvoted");
@@ -45,7 +47,19 @@ export default function Vote() {
       const { data: userInfo, error: userInfoError } =
         await supabase.auth.getSession();
 
-      return [allAlbums, activeAlbum, upvotes, downvotes, userInfo];
+      const activeUserId = userInfo.session.user.id;
+
+      const { data: activeUserVotes, error: activeUserVotesError } =
+        await supabase.from("votes").select("*").eq("user_id", activeUserId);
+
+      return [
+        allAlbums,
+        activeAlbum,
+        upvotes,
+        downvotes,
+        userInfo,
+        activeUserVotes,
+      ];
     },
     { refetchOnWindowFocus: false }
   );
@@ -59,7 +73,31 @@ export default function Vote() {
       setUpvotes(data[2].length);
       setDownvotes(data[3].length);
       setUser(data[4].session.user);
+
+      const numberOfVotesAvailable = 10;
+      const votesUsedToday = data[5].filter(
+        (vote) =>
+          dayjs(new Date(vote.created_at)).format("YYYY/MM/DD") ===
+          dayjs().format("YYYY/MM/DD")
+      );
+
+      setAllVotesUsed(
+        numberOfVotesAvailable <= votesUsedToday.length ? true : false
+      );
+
+      console.log("votesUsedToday", votesUsedToday);
     }
+
+    // const numberOfVotesAvailable = 3;
+    // const votesUsedToday = data[5].data.data.votes.filter(
+    //   (vote) =>
+    //     dayjs(new Date(vote.created_at)).format("YYYY/MM/DD") ===
+    //     dayjs().format("YYYY/MM/DD")
+    // );
+
+    // setAllVotesUsed(
+    //   numberOfVotesAvailable <= votesUsedToday.length ? true : false
+    // );
   }, [status, data, albums, albumIndex, currentAlbum, user]);
 
   function handleUpdateCurrentAlbum() {
@@ -211,7 +249,7 @@ export default function Vote() {
           ) : (
             <>
               <span>You have used all of your votes for today</span>
-              <Link href="/">Return to Dashboard</Link>
+              <Link href="/dashboard">Return to Dashboard</Link>
             </>
           )}
         </>
