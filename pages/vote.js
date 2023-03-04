@@ -7,7 +7,6 @@ import Link from "next/link";
 import React from "react";
 import toast from "react-hot-toast";
 import styles from "../styles/Vote.module.css";
-dayjs;
 
 const successfulUpvote = () => toast.success("Upvoted");
 const successfulDownvote = () => toast.success("Downvoted");
