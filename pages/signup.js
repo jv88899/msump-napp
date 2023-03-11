@@ -5,6 +5,7 @@ import styles from "../styles/Signup.module.css";
 import { supabase } from "@/utils/supabase";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Layout from "@/components/Layout";
 
 export default function Signup() {
   const {
@@ -32,7 +33,7 @@ export default function Signup() {
         },
       });
 
-      console.log(data);
+      console.log("signup data", data);
       console.log(error);
 
       if (data && !error) successfulSignup();
@@ -49,7 +50,7 @@ export default function Signup() {
         .select("*")
         .eq("username", username);
 
-      console.log("data", data);
+      console.log("data username", data);
       console.log("error", error);
 
       if (data.length === 0) {
@@ -60,94 +61,96 @@ export default function Signup() {
     } catch (error) {}
   }
 
-  console.log(checkIfUsernameTaken("test"));
+  // console.log(checkIfUsernameTaken("test"));
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.innerWrapper}>
-        <div className={styles.pageTitle}>
-          <h1>Sign Up</h1>
+    <Layout>
+      <div className={styles.wrapper}>
+        <div className={styles.innerWrapper}>
+          <div className={styles.pageTitle}>
+            <h1>Sign Up</h1>
+          </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className={styles.inputWrapper}>
+              <label htmlFor="username">Username</label>
+              <input
+                {...register("username", {
+                  required: "Username is required",
+                  minLength: {
+                    value: 3,
+                    message: "Username must be at least 3 characters",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "Username must be less than 20 characters",
+                  },
+                  validate: (value) => {
+                    return checkIfUsernameTaken(value);
+                  },
+                })}
+                type="text"
+              />
+              <div className={styles.error}>{errors.username?.message}</div>
+            </div>
+            <div className={styles.inputWrapper}>
+              <label htmlFor="fullname">Full Name</label>
+              <input
+                {...register("fullName", {
+                  required: "Full Name is required",
+                  maxLength: {
+                    value: 30,
+                    message: "Full name must be less than 30 characters",
+                  },
+                })}
+                type="text"
+              />
+              <div className={styles.error}>{errors.fullName?.message}</div>
+            </div>
+            <div className={styles.inputWrapper}>
+              <label htmlFor="email">Email</label>
+              <input
+                {...register("email", {
+                  required: "Email is required",
+                  maxLength: {
+                    value: 99,
+                    message: "Email must be less than 99 characters",
+                  },
+                })}
+                type="email"
+              />
+              <div className={styles.error}>
+                <p>{errors.email?.message}</p>
+              </div>
+            </div>
+            <div className={styles.inputWrapper}>
+              <label htmlFor="password">Password</label>
+              <input
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
+                  maxLength: {
+                    value: 30,
+                    message: "Password must be at least 30 characters",
+                  },
+                })}
+                type="password"
+              />
+              <div className={styles.error}>
+                <p>{errors.password?.message}</p>
+              </div>
+            </div>
+            <div className={styles.inputWrapper}>
+              <button className={styles.signupButton} type="submit">
+                Sign Up
+              </button>
+            </div>
+          </form>
+          Already have an account? <Link href="/signin">Sign in instead</Link>.
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.inputWrapper}>
-            <label htmlFor="username">Username</label>
-            <input
-              {...register("username", {
-                required: "Username is required",
-                minLength: {
-                  value: 3,
-                  message: "Username must be at least 3 characters",
-                },
-                maxLength: {
-                  value: 20,
-                  message: "Username must be less than 20 characters",
-                },
-                validate: (value) => {
-                  return checkIfUsernameTaken(value);
-                },
-              })}
-              type="text"
-            />
-            <div className={styles.error}>{errors.username?.message}</div>
-          </div>
-          <div className={styles.inputWrapper}>
-            <label htmlFor="fullname">Full Name</label>
-            <input
-              {...register("fullName", {
-                required: "Full Name is required",
-                maxLength: {
-                  value: 30,
-                  message: "Full name must be less than 30 characters",
-                },
-              })}
-              type="text"
-            />
-            <div className={styles.error}>{errors.fullName?.message}</div>
-          </div>
-          <div className={styles.inputWrapper}>
-            <label htmlFor="email">Email</label>
-            <input
-              {...register("email", {
-                required: "Email is required",
-                maxLength: {
-                  value: 99,
-                  message: "Email must be less than 99 characters",
-                },
-              })}
-              type="email"
-            />
-            <div className={styles.error}>
-              <p>{errors.email?.message}</p>
-            </div>
-          </div>
-          <div className={styles.inputWrapper}>
-            <label htmlFor="password">Password</label>
-            <input
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-                maxLength: {
-                  value: 30,
-                  message: "Password must be at least 30 characters",
-                },
-              })}
-              type="password"
-            />
-            <div className={styles.error}>
-              <p>{errors.password?.message}</p>
-            </div>
-          </div>
-          <div className={styles.inputWrapper}>
-            <button className={styles.signupButton} type="submit">
-              Sign Up
-            </button>
-          </div>
-        </form>
-        Already have an account? <Link href="/signin">Sign in instead</Link>.
       </div>
-    </div>
+    </Layout>
   );
 }

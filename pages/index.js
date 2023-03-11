@@ -4,11 +4,34 @@ import homeStyles from "../styles/Home.module.css";
 import Link from "next/link";
 import Header from "@/components/Header";
 import { supabase } from "@/utils/supabase";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
 export default function Home() {
+  const [user, setUser] = React.useState(null);
+
+  const { status, data, error, isLoading } = useQuery(
+    ["userInformation", user],
+    async function getUserInfo() {
+      const { data: user, error: userError } = await supabase.auth.getSession();
+
+      return user;
+    },
+    { refetchOnWindowFocus: false }
+  );
+
+  React.useEffect(() => {
+    if (status === "loading") return;
+    if (status === "success") {
+      console.log("data", data.session?.user);
+      setUser(data.session?.user);
+    }
+  }, [data, status]);
+
   supabase.auth.onAuthStateChange((event, session) => {
     console.log(event, session);
   });
+
   return (
     <>
       <Head>
@@ -17,7 +40,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
+      <Header user={user} />
       <div className={homeStyles.wrapper}>
         <section className={homeStyles.splashScreenWrapper}>
           <div className={homeStyles.innerWrapper}>
