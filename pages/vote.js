@@ -27,8 +27,10 @@ export default function Vote() {
     ["albumInformation", albumIndex],
     async function getAllAlbumInformation() {
       const { data: allAlbums, error } = await supabase
-        .from("albums")
+        .from("random_albums")
         .select("*");
+
+      console.log("allAlbums", allAlbums);
 
       const activeAlbum = allAlbums[albumIndex];
       const activeAlbumId = activeAlbum.id;
@@ -75,7 +77,7 @@ export default function Vote() {
       setDownvotes(data[3].length);
       setUser(data[4].session.user);
 
-      const numberOfVotesAvailable = 15;
+      const numberOfVotesAvailable = 5;
       const votesUsedToday = data[5].filter(
         (vote) =>
           dayjs(new Date(vote.created_at)).format("YYYY/MM/DD") ===
