@@ -1,6 +1,5 @@
 import Album from "@/components/Album";
 import Header from "@/components/Header";
-import Layout from "@/components/Layout";
 import { supabase } from "@/utils/supabase";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
