@@ -1,3 +1,4 @@
+import Hamburger from "hamburger-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -13,13 +14,15 @@ export default function Header() {
       <header className={styles.wrapper}>
         <div className={styles.innerWrapper}>
           <Link href="/">MSUMP</Link>
-          <button
-            className={styles.hamburgerMenuWrapper}
-            onClick={() => setNavigationMenuVisible((prevState) => !prevState)}
-          >
-            <div />
-            <div />
-          </button>
+          <Hamburger
+            onToggle={(toggled) => {
+              if (toggled) {
+                setNavigationMenuVisible(true);
+              } else {
+                setNavigationMenuVisible(false);
+              }
+            }}
+          />
         </div>
       </header>
     </>

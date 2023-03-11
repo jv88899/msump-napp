@@ -2,9 +2,9 @@
   background-color: #fff1ed;
   border-bottom: 1px solid black;
   height: 60px;
-  /* position: fixed; */
+  position: fixed;
   width: 100%;
-  z-index: -20;
+  z-index: 20;
 }
 
 .innerWrapper {
@@ -39,7 +39,7 @@
 
 .navigationMenuWrapper {
   background-color: #fff;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 60px);
   left: 0;
   position: absolute;
   top: 60px;
